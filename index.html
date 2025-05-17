@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thời gian làm đề</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: url('dhnt.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .logo-top-left {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      width: 80px;
+      height: 80px;
+      z-index: 20;
+    }
+
+    .logo-top-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.92);
+      border-radius: 16px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 40px 30px 50px;
+      box-sizing: border-box;
+      text-align: center;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 30px;
+      user-select: none;
+    }
+
+    select, input {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #888;
+      background-color: #fff;
+      color: #000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      outline: none;
+    }
+
+    select:focus, input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+    }
+
+    select {
+      width: 100%;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .time-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      width: 100px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #388E3C;
+      transform: scale(1.05);
+    }
+
+    button:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+
+    #taskList {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .task {
+      background-color: #e9f5e9;
+      padding: 18px;
+      border-radius: 12px;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      color: #000;
+      font-weight: 600;
+    }
+
+    .task span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .task button {
+      background-color: #4CAF50;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .task button:hover:not(:disabled) {
+      background-color: #388E3C;
+    }
+
+    .task button:disabled {
+      background-color: #666;
+      cursor: not-allowed;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: #f44336;
+      color: white;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      border: none;
+      font-size: 18px;
+      line-height: 26px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .delete-btn:hover {
+      background: #b71c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-top-left">
+    <img src="logo.png" alt="Logo Đại học Ngoại thương" />
+  </div>
+
+  <div class="container" role="main">
+    <h1>Thời gian làm đề</h1>
+
+    <select id="taskName" aria-label="Chọn môn học">
+      <option value="" disabled selected>Chọn môn học</option>
+      <option value="Toán học">Toán học</option>
+      <option value="Ngữ văn">Ngữ văn</option>
+      <option value="Tiếng Anh">Tiếng Anh</option>
+      <option value="Hóa học">Hóa học</option>
+      <option value="Sinh học">Sinh học</option>
+      <option value="Vật lí">Vật lí</option>
+    </select>
+
+    <div class="time-inputs">
+      <input type="number" id="hours" placeholder="Giờ" min="0" aria-label="Giờ" />
+      <input type="number" id="minutes" placeholder="Phút" min="0" aria-label="Phút" />
+    </div>
+
+    <button onclick="addTask()" aria-label="Thêm">Thêm</button>
+
+    <div id="taskList" aria-live="polite" aria-relevant="additions"></div>
+  </div>
+
+  <audio id="alertSound" src="alert_10min.wav" preload="auto"></audio>
+  <audio id="endSound" src="end_time.wav" preload="auto"></audio>
+
+  <script>
+    const alertSound = document.getElementById("alertSound");
+    const endSound = document.getElementById("endSound");
+    alertSound.volume = 0.7;
+    endSound.volume = 0.7;
+
+    function addTask() {
+      const nameSelect = document.getElementById("taskName");
+      const name = nameSelect.value;
+      const hours = parseInt(document.getElementById("hours").value) || 0;
+      const minutes = parseInt(document.getElementById("minutes").value) || 0;
+
+      if (!name || (hours === 0 && minutes === 0)) return;
+
+      const totalSeconds = hours * 3600 + minutes * 60;
+      let timeLeft = totalSeconds;
+      let countdown = null;
+
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.innerText = name;
+
+      const timerSpan = document.createElement("span");
+      timerSpan.innerText = formatTime(timeLeft);
+
+      const buttonsGroup = document.createElement("div");
+      buttonsGroup.className = "buttons-group";
+
+      const startBtn = document.createElement("button");
+      startBtn.innerText = "Bắt đầu";
+      startBtn.onclick = () => {
+        if (countdown) return;
+        countdown = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            timerSpan.innerText = formatTime(timeLeft);
+            if (timeLeft === 600) alertSound.play();
+          } else {
+            clearInterval(countdown);
+            countdown = null;
+            timerSpan.innerText = "Đã xong!";
+            startBtn.disabled = true;
+            stopBtn.disabled = true;
+            endSound.play();
+          }
+        }, 1000);
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      };
+
+      const stopBtn = document.createElement("button");
+      stopBtn.innerText = "Dừng";
+      stopBtn.disabled = true;
+      stopBtn.onclick = () => {
+        if (countdown) {
+          clearInterval(countdown);
+          countdown = null;
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      };
+
+      buttonsGroup.appendChild(startBtn);
+      buttonsGroup.appendChild(stopBtn);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "×";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.onclick = () => {
+        if (countdown) clearInterval(countdown);
+        taskDiv.remove();
+      };
+
+      taskDiv.appendChild(nameSpan);
+      taskDiv.appendChild(timerSpan);
+      taskDiv.appendChild(buttonsGroup);
+      taskDiv.appendChild(deleteBtn);
+
+      document.getElementById("taskList").appendChild(taskDiv);
+
+      nameSelect.selectedIndex = 0;
+      document.getElementById("hours").value = "";
+      document.getElementById("minutes").value = "";
+    }
+
+    function formatTime(totalSeconds) {
+      const h = Math.floor(totalSeconds / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = totalSeconds % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+  </script>
+</body>
+</html>
