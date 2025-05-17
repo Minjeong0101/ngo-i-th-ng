@@ -27,8 +27,8 @@
       position: fixed;
       top: 16px;
       left: 16px;
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       z-index: 20;
     }
 
@@ -53,7 +53,6 @@
     h1 {
       font-size: 36px;
       font-weight: 700;
-      color: #000;
       margin-bottom: 30px;
       user-select: none;
     }
@@ -65,7 +64,6 @@
       border-radius: 10px;
       border: 1px solid #888;
       background-color: #fff;
-      color: #000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: 0.3s;
       outline: none;
@@ -131,7 +129,6 @@
       position: relative;
       text-align: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      color: #000;
       font-weight: 600;
     }
 
@@ -169,25 +166,24 @@
     }
 
     .delete-btn {
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      background: #f44336;
-      color: white;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      font-weight: bold;
-      border: none;
-      font-size: 18px;
-      line-height: 26px;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.3s;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #4CAF50;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
     }
 
-    .delete-btn:hover {
-      background: #b71c1c;
+    .delete-btn svg {
+      width: 140px;
+      height: 140px;
     }
   </style>
 </head>
@@ -210,11 +206,11 @@
     </select>
 
     <div class="time-inputs">
-      <input type="number" id="hours" placeholder="Giờ" min="0" aria-label="Giờ" />
-      <input type="number" id="minutes" placeholder="Phút" min="0" aria-label="Phút" />
+      <input type="number" id="hours" placeholder="Giờ" min="0" />
+      <input type="number" id="minutes" placeholder="Phút" min="0" />
     </div>
 
-    <button onclick="addTask()" aria-label="Thêm">Thêm</button>
+    <button onclick="addTask()">Thêm</button>
 
     <div id="taskList" aria-live="polite" aria-relevant="additions"></div>
   </div>
@@ -225,8 +221,8 @@
   <script>
     const alertSound = document.getElementById("alertSound");
     const endSound = document.getElementById("endSound");
-    alertSound.volume = 0.7;
-    endSound.volume = 0.7;
+    alertSound.volume = 0.8;
+    endSound.volume = 0.8;
 
     function addTask() {
       const nameSelect = document.getElementById("taskName");
@@ -238,7 +234,7 @@
 
       const totalSeconds = hours * 3600 + minutes * 60;
       let timeLeft = totalSeconds;
-      let countdown = null;
+      let countdown;
 
       const taskDiv = document.createElement("div");
       taskDiv.className = "task";
@@ -263,7 +259,6 @@
             if (timeLeft === 600) alertSound.play();
           } else {
             clearInterval(countdown);
-            countdown = null;
             timerSpan.innerText = "Đã xong!";
             startBtn.disabled = true;
             stopBtn.disabled = true;
@@ -278,22 +273,24 @@
       stopBtn.innerText = "Dừng";
       stopBtn.disabled = true;
       stopBtn.onclick = () => {
-        if (countdown) {
-          clearInterval(countdown);
-          countdown = null;
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-        }
+        clearInterval(countdown);
+        countdown = null;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
       };
 
       buttonsGroup.appendChild(startBtn);
       buttonsGroup.appendChild(stopBtn);
 
       const deleteBtn = document.createElement("button");
-      deleteBtn.innerText = "×";
       deleteBtn.className = "delete-btn";
+      deleteBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>`;
       deleteBtn.onclick = () => {
-        if (countdown) clearInterval(countdown);
+        clearInterval(countdown);
         taskDiv.remove();
       };
 
